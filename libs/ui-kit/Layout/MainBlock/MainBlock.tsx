@@ -4,7 +4,10 @@ import styled from "styled-components";
 const SMainBlockContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 1rem;
+  margin: 2rem 3rem;
+  h3 {
+    font-size: 2.5rem;
+  }
 `;
 
 export const MainBlock: FC<{ children: React.ReactNode; title: string }> = ({
