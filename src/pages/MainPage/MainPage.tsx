@@ -1,5 +1,6 @@
+import { Layout } from "@conundrum/ui-kit";
 import { FC } from "react";
 
 export const MainPage: FC = () => {
-  return <h1>Home Page</h1>;
+  return <Layout title="Главная">sf</Layout>;
 };

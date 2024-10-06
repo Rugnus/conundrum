@@ -7,10 +7,11 @@
     "lib": ["es2023", "dom"],
       "baseUrl": ".",
       "paths": {
-        "@pages/*": ["src/pages/*"]
+        "@pages/*": ["src/pages/*"],
+        "@conundrum/ui-kit": ["libs/ui-kit/index.ts"],
       }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "libs/**/*"],
 
 }
   
