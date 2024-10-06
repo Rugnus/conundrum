@@ -1,5 +1,6 @@
+import { Layout } from "@conundrum/ui-kit";
 import { FC } from "react";
 
 export const AboutPage: FC = () => {
-  return <h1>About Page</h1>;
+  return <Layout title="О нас">About Page</Layout>;
 };

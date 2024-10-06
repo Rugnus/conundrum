@@ -1,5 +1,6 @@
+import { Layout } from "@conundrum/ui-kit";
 import { FC } from "react";
 
 export const CatalogPage: FC = () => {
-  return <h1>Catalog Page</h1>;
+  return <Layout title="Каталог">Catalog Page</Layout>;
 };
