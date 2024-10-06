@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+
+    "jsx": "react-jsx",
+    "lib": ["es2023", "dom"],
+      "baseUrl": ".",
+      "paths": {
+        "@pages/*": ["src/pages/*"]
+      }
+  },
+  "include": ["src/**/*"]
+
+}
+  
+
