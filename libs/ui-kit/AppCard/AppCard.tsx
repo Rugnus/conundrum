@@ -6,13 +6,21 @@ import {
   SCardTitle,
 } from "./styles/SAppCard";
 
-export const AppCard: FC<{
+interface IAppCard {
   title: string;
   description: string;
   image: string;
-}> = ({ title, description, image }) => {
+  onClick: () => void;
+}
+
+export const AppCard: FC<IAppCard> = ({
+  title,
+  description,
+  image,
+  onClick,
+}) => {
   return (
-    <SAppCard>
+    <SAppCard onClick={onClick}>
       <SCardImage src={image} />
       <SCardTitle>{title}</SCardTitle>
       <SCardDescription>{description}</SCardDescription>
