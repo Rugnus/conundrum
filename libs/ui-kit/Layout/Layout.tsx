@@ -4,14 +4,17 @@ import { MainBlock } from "./MainBlock/MainBlock";
 
 interface ILayout {
   title?: string;
+  backButton?: boolean;
   children: React.ReactNode;
 }
 
-export const Layout: FC<ILayout> = ({ children, title }) => {
+export const Layout: FC<ILayout> = ({ children, title, backButton }) => {
   return (
     <>
       <Header />
-      <MainBlock title={title}>{children}</MainBlock>
+      <MainBlock hasBackButton={backButton} title={title}>
+        {children}
+      </MainBlock>
     </>
   );
 };
