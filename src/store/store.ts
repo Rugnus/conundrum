@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
+import applicationSlice from "./applicationSlice";
 
 const store = configureStore({
   reducer: {
-    // здесь будут ваши редьюсеры
+    applicationReducer: applicationSlice,
+    // здесь будут редьюсеры
   },
 });
 
-// Типы для TypeScript
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
