@@ -20,6 +20,7 @@ export const breakPointsValues = {
 
 export const uiColors = {
   backgroundColor: "#F5EDED",
+  primaryColor: "#604CC3",
 };
 
 export const breakPoints = {
