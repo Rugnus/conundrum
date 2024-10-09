@@ -29,8 +29,9 @@ const SInputWrapper = styled.div`
 `;
 
 export const BlindTypeTraining: FC = () => {
-  const [userInput, setUserInput] = useState<string>("тренировка печати");
+  const [userInput, setUserInput] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
 
   useEffect(() => {
     inputRef?.current?.focus();
@@ -67,13 +68,26 @@ export const BlindTypeTraining: FC = () => {
     }
   };
 
+  const handleStart = () => {
+    setIsInputDisabled(false);
+
+    handleRandomSentence()
+      .then(() => inputRef.current?.focus())
+      .catch((e) => console.log(e));
+  };
+
   return (
     <SBlindTypeTraining>
       <SInputWrapper>
-        <Input value={userInput} onKeyDown={handleKeyChange} readOnly />
+        <Input
+          value={userInput}
+          onKeyDown={handleKeyChange}
+          disabled={isInputDisabled}
+          ref={inputRef}
+          readOnly
+        />
       </SInputWrapper>
-
-      <Button title="Начать тренировку" />
+      <Button title="Начать тренировку" onClick={handleStart} />{" "}
     </SBlindTypeTraining>
   );
 };
