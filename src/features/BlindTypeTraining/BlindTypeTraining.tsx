@@ -1,4 +1,4 @@
-import { Button, pxToRem } from "@conundrum/ui-kit";
+import { Button, pxToRem, Timer } from "@conundrum/ui-kit";
 import { Input } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -100,13 +100,16 @@ export const BlindTypeTraining: FC = () => {
           readOnly
         />
       </SInputWrapper>
+      <Timer timeRange="01:00" />
       <Button title="Начать тренировку" onClick={handleStart} />{" "}
       {!isInputDisabled && (
-        <UserStats
-          correctLetters={correctLetters}
-          userMistakes={userMistakes}
-          correctPercentage={correctPercentage}
-        />
+        <>
+          <UserStats
+            correctLetters={correctLetters}
+            userMistakes={userMistakes}
+            correctPercentage={correctPercentage}
+          />
+        </>
       )}
     </SBlindTypeTraining>
   );
