@@ -40,14 +40,12 @@ export const BlindTypeTraining: FC = () => {
   const fetchRandomSentence = async () => {
     const response = await fetch("https://api.quotable.io/random");
     const data = await response.json();
-    console.log(data);
 
     return data.content;
   };
 
   const handleRandomSentence = async () => {
     const newSentence = await fetchRandomSentence();
-    console.log(newSentence);
 
     setUserInput(newSentence);
   };
