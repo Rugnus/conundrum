@@ -16,6 +16,9 @@ const SButton = styled.div`
   cursor: pointer;
 `;
 
-export const Button: FC<{ title: string }> = ({ title }) => {
-  return <SButton>{title}</SButton>;
+export const Button: FC<{ title: string; onClick?: () => void }> = ({
+  title,
+  onClick,
+}) => {
+  return <SButton onClick={onClick}>{title}</SButton>;
 };
