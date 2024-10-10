@@ -37,6 +37,19 @@ export const BlindTypeTraining: FC = () => {
   const [userMistakes, setUserMistakes] = useState<number>(0);
   const [correctPercentage, setCorrectPercentage] = useState<string>("0%");
 
+  const [duration, setDuration] = useState<number>(60000);
+  const minutes = Math.floor(duration / 60000);
+  const seconds = Math.floor((duration % 60000) / 1000);
+  const [timeRange, setTimeRange] = useState<string>(
+    `${minutes}:${seconds.toString().padStart(2, "0")}`
+  );
+
+  useEffect(() => {
+    const minutes = Math.floor(duration / 60000);
+    const seconds = Math.floor((duration % 60000) / 1000);
+    setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
+  }, [duration]);
+
   useEffect(() => {
     inputRef?.current?.focus();
   }, []);
@@ -84,9 +97,38 @@ export const BlindTypeTraining: FC = () => {
   const handleStart = () => {
     setIsInputDisabled(false);
 
+    const startTime = new Date().getTime();
+
     handleRandomSentence()
       .then(() => inputRef.current?.focus())
+      .then(() => {
+        const intervalId = setInterval(() => {
+          const currentTime = new Date().getTime();
+          const remainingTime = duration - (currentTime - startTime);
+          const minutes = Math.floor(remainingTime / 60000);
+          const seconds = Math.floor((remainingTime % 60000) / 1000);
+          setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
+
+          if (remainingTime <= 0) {
+            clearInterval(intervalId);
+            setIsInputDisabled(true);
+            // Здесь можно написать код, который будет выполнен через 5 секунд
+          }
+        }, 1000);
+      })
       .catch((e) => console.log(e));
+  };
+
+  const addTime = () => {
+    setDuration((prevDuration) => prevDuration + 30000);
+  };
+
+  const reduceTime = () => {
+    if (duration !== 0) {
+      setDuration((prevDuration) => prevDuration - 30000);
+    } else {
+      return;
+    }
   };
 
   return (
@@ -100,7 +142,7 @@ export const BlindTypeTraining: FC = () => {
           readOnly
         />
       </SInputWrapper>
-      <Timer timeRange="01:00" />
+      <Timer timeRange={timeRange} addTime={addTime} reduceTime={reduceTime} />
       <Button title="Начать тренировку" onClick={handleStart} />{" "}
       {!isInputDisabled && (
         <>
