@@ -101,7 +101,7 @@ export const BlindTypeTraining: FC = () => {
 
     handleRandomSentence()
       .then(() => inputRef.current?.focus())
-      .then(() => {
+      .finally(() => {
         const intervalId = setInterval(() => {
           const currentTime = new Date().getTime();
           const remainingTime = duration - (currentTime - startTime);
@@ -111,8 +111,9 @@ export const BlindTypeTraining: FC = () => {
 
           if (remainingTime <= 0) {
             clearInterval(intervalId);
+            inputRef.current.value = "";
             setIsInputDisabled(true);
-            // Здесь можно написать код, который будет выполнен через 5 секунд
+            setTimeRange(`0:00`);
           }
         }, 1000);
       })
