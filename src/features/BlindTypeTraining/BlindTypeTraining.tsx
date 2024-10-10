@@ -1,7 +1,8 @@
-import { Button, pxToRem } from "@conundrum/ui-kit";
-import { Descriptions, Input } from "antd";
+import { Button, pxToRem, Timer } from "@conundrum/ui-kit";
+import { Input } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { UserStats } from "./UserStats";
 
 const SBlindTypeTraining = styled.div`
   display: flex;
@@ -34,10 +35,19 @@ export const BlindTypeTraining: FC = () => {
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
   const [correctLetters, setCorrectLetters] = useState<number>(0);
   const [userMistakes, setUserMistakes] = useState<number>(0);
+  const [correctPercentage, setCorrectPercentage] = useState<string>("0%");
 
   useEffect(() => {
     inputRef?.current?.focus();
   }, []);
+
+  useEffect(() => {
+    setCorrectPercentage(
+      `${((correctLetters / (correctLetters + userMistakes)) * 100).toFixed(
+        2
+      )}%`
+    );
+  }, [correctLetters, userMistakes]);
 
   const fetchRandomSentence = async () => {
     const response = await fetch("https://api.quotable.io/random");
@@ -61,6 +71,7 @@ export const BlindTypeTraining: FC = () => {
     if (keyPressed === userInput[0]) {
       setUserInput((prev) => prev.slice(1));
       setCorrectLetters(correctLetters + 1);
+
       if (userInput.length === 1) {
         handleRandomSentence();
       }
@@ -89,23 +100,16 @@ export const BlindTypeTraining: FC = () => {
           readOnly
         />
       </SInputWrapper>
+      <Timer timeRange="01:00" />
       <Button title="Начать тренировку" onClick={handleStart} />{" "}
       {!isInputDisabled && (
-        <Descriptions title="Статистика" bordered>
-          <Descriptions.Item label="Correct: ">
-            {correctLetters}
-          </Descriptions.Item>
-          <Descriptions.Item label="Mistakes">{userMistakes}</Descriptions.Item>
-          <Descriptions.Item label="Percentage of correct entries">
-            {((correctLetters / (correctLetters + userMistakes)) * 100).toFixed(
-              2
-            )}
-            %
-          </Descriptions.Item>
-          <Descriptions.Item label="Letters per second">
-            empty
-          </Descriptions.Item>
-        </Descriptions>
+        <>
+          <UserStats
+            correctLetters={correctLetters}
+            userMistakes={userMistakes}
+            correctPercentage={correctPercentage}
+          />
+        </>
       )}
     </SBlindTypeTraining>
   );
