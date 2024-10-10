@@ -1,6 +1,24 @@
+import {
+  MinusCircleOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons/lib/icons";
 import { FC } from "react";
 import styled from "styled-components";
 import { borderRadius, pxToRem, uiColors } from "../config/config";
+
+const STimerWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: ${pxToRem(30)};
+
+  svg {
+    cursor: pointer;
+    font-size: ${pxToRem(30)};
+    color: ${uiColors.primaryColor};
+  }
+`;
 
 const STimer = styled.div`
   display: flex;
@@ -20,6 +38,16 @@ const STimer = styled.div`
   cursor: not-allowed;
 `;
 
-export const Timer: FC<{ timeRange: string }> = ({ timeRange }) => {
-  return <STimer>{timeRange}</STimer>;
+export const Timer: FC<{
+  timeRange: string;
+  addTime: () => void;
+  reduceTime: () => void;
+}> = ({ timeRange, addTime, reduceTime }) => {
+  return (
+    <STimerWrapper>
+      <PlusCircleOutlined onClick={addTime} />
+      <STimer>{timeRange}</STimer>
+      <MinusCircleOutlined onClick={reduceTime} />
+    </STimerWrapper>
+  );
 };
