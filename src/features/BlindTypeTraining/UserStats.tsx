@@ -13,6 +13,7 @@ export const UserStats: FC<IUserStats> = ({
   correctLetters,
   userMistakes,
   correctPercentage,
+  lettersPerSecond,
 }) => {
   return (
     <>
@@ -24,7 +25,9 @@ export const UserStats: FC<IUserStats> = ({
         <Descriptions.Item label="Percentage of correct entries">
           {correctPercentage}
         </Descriptions.Item>
-        <Descriptions.Item label="Letters per second">empty</Descriptions.Item>
+        <Descriptions.Item label="Letters per second">
+          {lettersPerSecond}
+        </Descriptions.Item>
       </Descriptions>
     </>
   );
