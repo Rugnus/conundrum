@@ -36,6 +36,7 @@ export const BlindTypeTraining: FC = () => {
   const [correctLetters, setCorrectLetters] = useState<number>(0);
   const [userMistakes, setUserMistakes] = useState<number>(0);
   const [correctPercentage, setCorrectPercentage] = useState<string>("0%");
+  const [lettersPerSecond, setLettersPerSecond] = useState<number>(0.0);
 
   const [duration, setDuration] = useState<number>(60000);
   const minutes = Math.floor(duration / 60000);
@@ -109,6 +110,10 @@ export const BlindTypeTraining: FC = () => {
           const seconds = Math.floor((remainingTime % 60000) / 1000);
           setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
 
+          const elapsedTime = (60000 - remainingTime) / 1000; // Время в секундах
+          const averageLPS = Number((correctLetters / elapsedTime).toFixed(2)); // Средняя скорость
+          setLettersPerSecond(averageLPS);
+
           if (remainingTime <= 0) {
             clearInterval(intervalId);
             inputRef.current.value = "";
@@ -145,15 +150,14 @@ export const BlindTypeTraining: FC = () => {
       </SInputWrapper>
       <Timer timeRange={timeRange} addTime={addTime} reduceTime={reduceTime} />
       <Button title="Начать тренировку" onClick={handleStart} />{" "}
-      {!isInputDisabled && (
-        <>
-          <UserStats
-            correctLetters={correctLetters}
-            userMistakes={userMistakes}
-            correctPercentage={correctPercentage}
-          />
-        </>
-      )}
+      <>
+        <UserStats
+          correctLetters={correctLetters}
+          userMistakes={userMistakes}
+          correctPercentage={correctPercentage}
+          lettersPerSecond={lettersPerSecond}
+        />
+      </>
     </SBlindTypeTraining>
   );
 };
