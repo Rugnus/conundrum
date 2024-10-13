@@ -76,6 +76,38 @@ export const BlindTypeTraining: FC = () => {
     setUserInput(newSentence);
   };
 
+  const handleStart = () => {
+    setIsInputDisabled(false);
+
+    const startTime = new Date().getTime();
+
+    handleRandomSentence()
+      .then(() => inputRef.current?.focus())
+      .catch((e) => console.log(e))
+      .finally(() => {
+        const intervalId = setInterval(() => {
+          const currentTime = new Date().getTime();
+          const remainingTime = duration - (currentTime - startTime);
+          const minutes = Math.floor(remainingTime / 60000);
+          const seconds = Math.floor((remainingTime % 60000) / 1000);
+          setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
+
+          if (remainingTime <= 0) {
+            clearInterval(intervalId);
+
+            const elapsedTime = duration / 1000; // Время в секундах
+            const averageLPS = correctLetters / elapsedTime;
+
+            setLettersPerSecond(parseFloat(averageLPS.toFixed(2)));
+
+            inputRef.current.value = "";
+            setIsInputDisabled(true);
+            setTimeRange(`0:00`);
+          }
+        }, 1000);
+      });
+  };
+
   const handleKeyChange = (
     e: React.KeyboardEvent<HTMLInputElement> &
       React.ChangeEvent<HTMLInputElement>
@@ -93,36 +125,6 @@ export const BlindTypeTraining: FC = () => {
       setUserMistakes(userMistakes + 1);
       e.preventDefault();
     }
-  };
-
-  const handleStart = () => {
-    setIsInputDisabled(false);
-
-    const startTime = new Date().getTime();
-
-    handleRandomSentence()
-      .then(() => inputRef.current?.focus())
-      .finally(() => {
-        const intervalId = setInterval(() => {
-          const currentTime = new Date().getTime();
-          const remainingTime = duration - (currentTime - startTime);
-          const minutes = Math.floor(remainingTime / 60000);
-          const seconds = Math.floor((remainingTime % 60000) / 1000);
-          setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
-
-          const elapsedTime = (60000 - remainingTime) / 1000; // Время в секундах
-          const averageLPS = Number((correctLetters / elapsedTime).toFixed(2)); // Средняя скорость
-          setLettersPerSecond(averageLPS);
-
-          if (remainingTime <= 0) {
-            clearInterval(intervalId);
-            inputRef.current.value = "";
-            setIsInputDisabled(true);
-            setTimeRange(`0:00`);
-          }
-        }, 1000);
-      })
-      .catch((e) => console.log(e));
   };
 
   const addTime = () => {
