@@ -1,6 +1,8 @@
 import { Button, pxToRem, Timer } from "@conundrum/ui-kit";
 import { Input } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addGameStats } from "src/store/statSlice";
 import styled from "styled-components";
 import { UserStats } from "./UserStats";
 
@@ -30,6 +32,7 @@ const SInputWrapper = styled.div`
 `;
 
 export const BlindTypeTraining: FC = () => {
+  const dispatch = useDispatch();
   const [userInput, setUserInput] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
@@ -97,12 +100,26 @@ export const BlindTypeTraining: FC = () => {
 
             const elapsedTime = duration / 1000; // Время в секундах
             const averageLPS = correctLetters / elapsedTime;
+            console.log(elapsedTime, averageLPS);
 
             setLettersPerSecond(parseFloat(averageLPS.toFixed(2)));
 
             inputRef.current.value = "";
             setIsInputDisabled(true);
             setTimeRange(`0:00`);
+
+            dispatch(
+              addGameStats({
+                gameName: "Blind Type Training",
+                stats: {
+                  correctLetters,
+                  mistakes: userMistakes,
+                  accuracy: correctPercentage,
+                  lettersPerSecond: lettersPerSecond,
+                  duration: timeRange,
+                },
+              })
+            );
           }
         }, 1000);
       });
