@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import applicationSlice from "./applicationSlice";
+import statSlice from "./statSlice";
 
 const store = configureStore({
   reducer: {
     applicationReducer: applicationSlice,
+    statSlice: statSlice,
     // здесь будут редьюсеры
   },
 });

@@ -1,6 +1,8 @@
 import { Button, pxToRem, Timer } from "@conundrum/ui-kit";
 import { Input } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addGameStats } from "src/store/statSlice";
 import styled from "styled-components";
 import { UserStats } from "./UserStats";
 
@@ -30,6 +32,7 @@ const SInputWrapper = styled.div`
 `;
 
 export const BlindTypeTraining: FC = () => {
+  const dispatch = useDispatch();
   const [userInput, setUserInput] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
@@ -76,6 +79,52 @@ export const BlindTypeTraining: FC = () => {
     setUserInput(newSentence);
   };
 
+  const handleStart = () => {
+    setIsInputDisabled(false);
+
+    const startTime = new Date().getTime();
+
+    handleRandomSentence()
+      .then(() => inputRef.current?.focus())
+      .catch((e) => console.log(e))
+      .finally(() => {
+        const intervalId = setInterval(() => {
+          const currentTime = new Date().getTime();
+          const remainingTime = duration - (currentTime - startTime);
+          const minutes = Math.floor(remainingTime / 60000);
+          const seconds = Math.floor((remainingTime % 60000) / 1000);
+          setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
+
+          if (remainingTime <= 0) {
+            clearInterval(intervalId);
+
+            const elapsedTime = duration / 1000; // Время в секундах
+            const averageLPS = correctLetters / elapsedTime;
+            console.log(elapsedTime, averageLPS);
+
+            setLettersPerSecond(parseFloat(averageLPS.toFixed(2)));
+
+            inputRef.current.value = "";
+            setIsInputDisabled(true);
+            setTimeRange(`0:00`);
+
+            dispatch(
+              addGameStats({
+                gameName: "Blind Type Training",
+                stats: {
+                  correctLetters,
+                  mistakes: userMistakes,
+                  accuracy: correctPercentage,
+                  lettersPerSecond: lettersPerSecond,
+                  duration: timeRange,
+                },
+              })
+            );
+          }
+        }, 1000);
+      });
+  };
+
   const handleKeyChange = (
     e: React.KeyboardEvent<HTMLInputElement> &
       React.ChangeEvent<HTMLInputElement>
@@ -93,36 +142,6 @@ export const BlindTypeTraining: FC = () => {
       setUserMistakes(userMistakes + 1);
       e.preventDefault();
     }
-  };
-
-  const handleStart = () => {
-    setIsInputDisabled(false);
-
-    const startTime = new Date().getTime();
-
-    handleRandomSentence()
-      .then(() => inputRef.current?.focus())
-      .finally(() => {
-        const intervalId = setInterval(() => {
-          const currentTime = new Date().getTime();
-          const remainingTime = duration - (currentTime - startTime);
-          const minutes = Math.floor(remainingTime / 60000);
-          const seconds = Math.floor((remainingTime % 60000) / 1000);
-          setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
-
-          const elapsedTime = (60000 - remainingTime) / 1000; // Время в секундах
-          const averageLPS = Number((correctLetters / elapsedTime).toFixed(2)); // Средняя скорость
-          setLettersPerSecond(averageLPS);
-
-          if (remainingTime <= 0) {
-            clearInterval(intervalId);
-            inputRef.current.value = "";
-            setIsInputDisabled(true);
-            setTimeRange(`0:00`);
-          }
-        }, 1000);
-      })
-      .catch((e) => console.log(e));
   };
 
   const addTime = () => {
