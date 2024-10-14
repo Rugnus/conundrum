@@ -1,50 +1,68 @@
-# React + TypeScript + Vite
+# Тренировочная платформа Conundrum
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Это одностраничное приложение (SPA), созданное с использованием **React**, **Redux Toolkit** и **Styled-components** (SCSS) и включающеев себя различные тренажеры для улучшения навыков. Слепой набор — один из доступных тренингов, с функционалом для отслеживания скорости и точности набора.
 
-Currently, two official plugins are available:
+> _Проект находится в стадии разработки. Ожидаются новые внутренние приложения, дополнительные функции и улучшения, а также добавление backend микросервисов на Golang_
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Структура проекта
 
-## Expanding the ESLint configuration
+- `libs/ui-kit`: Переиспользуемые UI-компоненты (кнопки, таймеры и т.д.).
+- `src/assets`: Статичные ресурсы (изображения, шрифты и т.д.).
+- `src/components`: Кастомные компоненты.
+- `src/features/BlindTypeTraining`: Основной модуль приложений. Фичи
+- `src/store`: Redux-хранилище
+- `src/pages`: Компоненты страниц.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Установка и запуск
 
-- Configure the top-level `parserOptions` property like this:
+1. Клонируйте репозиторий:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+    ```bash
+    git clone <ссылка-репозитория>
+    ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Перейдите в папку проекта:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+    ```bash
+    cd <папка-проекта>
+    ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+3. Установите зависимости:
+
+    ```bash
+    npm install
+    ```
+
+4. Запустите проект в режиме разработки:
+
+    ```bash
+    vite
+    ```
+
+5. Откройте приложение в браузере по адресу `http://localhost:3000`.
+
+## Скрипты
+
+- `vite dev`: Запуск сервера разработки.
+- `vite build`: Сборка проекта для продакшена.
+- `npm run lint`: Линтинг кода.
+
+## Возможности
+
+- **Тренировка слепого набора**: Печать случайных предложений с отслеживанием в реальном времени скорости и точности.
+- **Интеграция с Redux**: Статистика набора (точность, скорость, ошибки) сохраняется в Redux.
+- **Styled-components**: Стилизация приложения с помощью `styled-components`.
+
+## Используемые технологии
+
+- **React** (TypeScript)
+- **react-router-dom**
+- **Redux Toolkit**
+- **Styled-components**
+- **AntDesign**
+- **Sass/SCSS**
+- **Vite** для разработки
+
+## Примечания
+
+Проект находится в стадии разработки. Ожидаются новые внутренние приложения, дополнительные функции и улучшения, а также добавление backend микросервисов на Golang
