@@ -7,6 +7,7 @@ interface IUserStats {
   userMistakes: number;
   correctPercentage: string;
   lettersPerSecond?: number;
+  isStateStat?: boolean;
 }
 
 export const UserStats: FC<IUserStats> = ({
@@ -14,10 +15,14 @@ export const UserStats: FC<IUserStats> = ({
   userMistakes,
   correctPercentage,
   lettersPerSecond,
+  isStateStat,
 }) => {
   return (
     <>
-      <Descriptions title="Статистика" bordered>
+      <Descriptions
+        title={isStateStat ? "Последний результат" : "Статистика"}
+        bordered
+      >
         <Descriptions.Item label="Correct: ">
           {correctLetters}
         </Descriptions.Item>
