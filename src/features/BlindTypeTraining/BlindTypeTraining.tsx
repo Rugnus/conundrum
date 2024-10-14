@@ -1,8 +1,9 @@
 import { Button, pxToRem, Timer } from "@conundrum/ui-kit";
 import { Input } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addGameStats } from "src/store/statSlice";
+import { RootState } from "src/store/store";
 import styled from "styled-components";
 import { UserStats } from "./UserStats";
 
@@ -39,6 +40,12 @@ export const BlindTypeTraining: FC = () => {
   const lettersPerSecondRef = useRef<number>(0.0);
   const correctPercentageRef = useRef<string>("0%");
 
+  const stats = useSelector((state: RootState) => state.statSlice.gameStats);
+
+  const gameStats =
+    stats.length > 0 &&
+    stats?.find((item) => item.gameName === "Blind Type Training").stats;
+
   const [userInput, setUserInput] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
@@ -60,23 +67,6 @@ export const BlindTypeTraining: FC = () => {
     setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
   }, [duration]);
 
-  // useEffect(() => {
-  //   if (correctLetters !== 0 || userMistakes !== 0 || lettersPerSecond !== 0) {
-  //     dispatch(
-  //       addGameStats({
-  //         gameName: "Blind Type Training",
-  //         stats: {
-  //           correctLetters,
-  //           mistakes: userMistakes,
-  //           accuracy: correctPercentage,
-  //           lettersPerSecond: lettersPerSecond,
-  //           duration: timeRange,
-  //         },
-  //       })
-  //     );
-  //   }
-  // }, [correctLetters, userMistakes, lettersPerSecond, correctPercentage]);
-
   useEffect(() => {
     inputRef?.current?.focus();
   }, []);
@@ -90,9 +80,7 @@ export const BlindTypeTraining: FC = () => {
 
     correctLettersRef.current = correctLetters;
     userMistakesRef.current = userMistakes;
-    lettersPerSecondRef.current = lettersPerSecond;
     correctPercentageRef.current = correctPercentage;
-    lettersPerSecondRef.current = lettersPerSecond;
   }, [correctLetters, userMistakes]);
 
   const fetchRandomSentence = async () => {
@@ -126,11 +114,10 @@ export const BlindTypeTraining: FC = () => {
 
           if (remainingTime <= 0) {
             const elapsedTime = duration / 1000; // Время в секундах
-            const averageLPS = correctLetters / elapsedTime;
-            console.log(elapsedTime, averageLPS);
+            const averageLPS = correctLettersRef.current / elapsedTime;
 
             setLettersPerSecond(parseFloat(averageLPS.toFixed(2)));
-            // lettersPerSecondRef.current = averageLPS;
+            lettersPerSecondRef.current = parseFloat(averageLPS.toFixed(2));
 
             dispatch(
               addGameStats({
@@ -148,9 +135,9 @@ export const BlindTypeTraining: FC = () => {
             inputRef.current.value = "";
             setIsInputDisabled(true);
             setTimeRange(`0:00`);
-            clearInterval(intervalId);
           }
         }, 1000);
+        return () => clearInterval(intervalId); // Cleanup
       });
   };
 
@@ -200,10 +187,11 @@ export const BlindTypeTraining: FC = () => {
       <Button title="Начать тренировку" onClick={handleStart} />{" "}
       <>
         <UserStats
-          correctLetters={correctLetters}
-          userMistakes={userMistakes}
-          correctPercentage={correctPercentage}
-          lettersPerSecond={lettersPerSecond}
+          correctLetters={gameStats.correctLetters ?? correctLetters}
+          userMistakes={gameStats.mistakes ?? userMistakes}
+          correctPercentage={gameStats.accuracy ?? correctPercentage}
+          lettersPerSecond={gameStats.lettersPerSecond ?? lettersPerSecond}
+          isStateStat={!!stats.length}
         />
       </>
     </SBlindTypeTraining>
