@@ -1,36 +1,11 @@
-import { Button, pxToRem, Timer } from "@conundrum/ui-kit";
+import { Button, Timer } from "@conundrum/ui-kit";
 import { Input } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addGameStats } from "src/store/statSlice";
 import { RootState } from "src/store/store";
-import styled from "styled-components";
+import { SBlindTypeTraining, SInputWrapper } from "./SBlindTypeTraining";
 import { UserStats } from "./UserStats";
-
-const SBlindTypeTraining = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: ${pxToRem(15)};
-  align-items: center;
-  margin: ${pxToRem(30)} auto;
-`;
-
-const SInputWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-
-  input {
-    text-align: center;
-    font-size: ${pxToRem(24)};
-    width: 100%;
-    height: ${pxToRem(70)};
-    letter-spacing: ${pxToRem(2)};
-  }
-`;
 
 export const BlindTypeTraining: FC = () => {
   const dispatch = useDispatch();
