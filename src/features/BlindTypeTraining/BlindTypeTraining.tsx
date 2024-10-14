@@ -33,6 +33,12 @@ const SInputWrapper = styled.div`
 
 export const BlindTypeTraining: FC = () => {
   const dispatch = useDispatch();
+
+  const correctLettersRef = useRef<number>(0);
+  const userMistakesRef = useRef<number>(0);
+  const lettersPerSecondRef = useRef<number>(0.0);
+  const correctPercentageRef = useRef<string>("0%");
+
   const [userInput, setUserInput] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [isInputDisabled, setIsInputDisabled] = useState<boolean>(true);
@@ -54,6 +60,23 @@ export const BlindTypeTraining: FC = () => {
     setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
   }, [duration]);
 
+  // useEffect(() => {
+  //   if (correctLetters !== 0 || userMistakes !== 0 || lettersPerSecond !== 0) {
+  //     dispatch(
+  //       addGameStats({
+  //         gameName: "Blind Type Training",
+  //         stats: {
+  //           correctLetters,
+  //           mistakes: userMistakes,
+  //           accuracy: correctPercentage,
+  //           lettersPerSecond: lettersPerSecond,
+  //           duration: timeRange,
+  //         },
+  //       })
+  //     );
+  //   }
+  // }, [correctLetters, userMistakes, lettersPerSecond, correctPercentage]);
+
   useEffect(() => {
     inputRef?.current?.focus();
   }, []);
@@ -64,6 +87,12 @@ export const BlindTypeTraining: FC = () => {
         2
       )}%`
     );
+
+    correctLettersRef.current = correctLetters;
+    userMistakesRef.current = userMistakes;
+    lettersPerSecondRef.current = lettersPerSecond;
+    correctPercentageRef.current = correctPercentage;
+    lettersPerSecondRef.current = lettersPerSecond;
   }, [correctLetters, userMistakes]);
 
   const fetchRandomSentence = async () => {
@@ -96,30 +125,30 @@ export const BlindTypeTraining: FC = () => {
           setTimeRange(`${minutes}:${seconds.toString().padStart(2, "0")}`);
 
           if (remainingTime <= 0) {
-            clearInterval(intervalId);
-
             const elapsedTime = duration / 1000; // Время в секундах
             const averageLPS = correctLetters / elapsedTime;
             console.log(elapsedTime, averageLPS);
 
             setLettersPerSecond(parseFloat(averageLPS.toFixed(2)));
-
-            inputRef.current.value = "";
-            setIsInputDisabled(true);
-            setTimeRange(`0:00`);
+            // lettersPerSecondRef.current = averageLPS;
 
             dispatch(
               addGameStats({
                 gameName: "Blind Type Training",
                 stats: {
-                  correctLetters,
-                  mistakes: userMistakes,
-                  accuracy: correctPercentage,
-                  lettersPerSecond: lettersPerSecond,
+                  correctLetters: correctLettersRef.current,
+                  mistakes: userMistakesRef.current,
+                  accuracy: correctPercentageRef.current,
+                  lettersPerSecond: lettersPerSecondRef.current,
                   duration: timeRange,
                 },
               })
             );
+
+            inputRef.current.value = "";
+            setIsInputDisabled(true);
+            setTimeRange(`0:00`);
+            clearInterval(intervalId);
           }
         }, 1000);
       });
