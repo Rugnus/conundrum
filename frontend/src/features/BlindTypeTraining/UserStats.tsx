@@ -1,5 +1,5 @@
 export { FC } from "react";
-import { Descriptions } from "antd";
+import { Button, Descriptions } from "antd";
 import { FC } from "react";
 
 interface IUserStats {
@@ -8,6 +8,7 @@ interface IUserStats {
   correctPercentage: string;
   lettersPerSecond?: number;
   isStateStat?: boolean;
+  onSave?: () => void;
 }
 
 export const UserStats: FC<IUserStats> = ({
@@ -16,6 +17,7 @@ export const UserStats: FC<IUserStats> = ({
   correctPercentage,
   lettersPerSecond,
   isStateStat,
+  onSave,
 }) => {
   return (
     <>
@@ -34,6 +36,12 @@ export const UserStats: FC<IUserStats> = ({
           {lettersPerSecond}
         </Descriptions.Item>
       </Descriptions>
+
+      {isStateStat && (
+        <Button type="primary" onClick={onSave}>
+          Сохранить результат
+        </Button>
+      )}
     </>
   );
 };
