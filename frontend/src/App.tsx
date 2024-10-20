@@ -1,4 +1,5 @@
 import { AboutPage } from "@pages/AboutPage/AboutPage";
+import { AuthenticationPage } from "@pages/AuthenticationPage/AuthenticationPage";
 import { BlindTypePage } from "@pages/BlindTypePage/BlindTypePage";
 import { CatalogPage } from "@pages/CatalogPage/CatalogPage";
 import { MainPage } from "@pages/MainPage/MainPage";
@@ -11,6 +12,7 @@ function App() {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/catalog" element={<CatalogPage />} />
       <Route path="/blind-type" element={<BlindTypePage />} />
+      <Route path="/auth" element={<AuthenticationPage />} />
     </Routes>
   );
 }

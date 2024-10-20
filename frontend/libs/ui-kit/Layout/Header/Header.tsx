@@ -51,6 +51,11 @@ export const Header = () => {
       label: "О нас",
       onClick: () => navigate("/about"),
     },
+    {
+      key: "4",
+      label: "Войти",
+      onClick: () => navigate("/auth"),
+    },
   ];
 
   return (

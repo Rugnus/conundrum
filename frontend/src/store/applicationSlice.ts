@@ -1,12 +1,5 @@
+import { Application } from "@conondrum/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Application {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  route: string;
-}
 
 interface ApplicationState {
   list: Application[];
@@ -22,6 +15,13 @@ const initialState: ApplicationState = {
       image:
         "https://wl-ideasen5minutos.cf.tsp.li/resize/1200x630/jpg/3d2/3a7/e4333251b09ef10f5bfce9910a.jpg", // замените на реальный URL
       route: "blind-type",
+    },
+    {
+      id: 1,
+      name: "Reaction Time Trainer",
+      description: "Train your reaction skills with this interactive app.",
+      image: "https://i.ytimg.com/vi/bXRZS3huy-g/maxresdefault.jpg", // замените на реальный URL
+      route: "reaction-trainer",
     },
   ],
 };
