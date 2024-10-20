@@ -9,6 +9,7 @@
       "paths": {
         "@pages/*": ["src/pages/*"],
         "@conundrum/ui-kit": ["libs/ui-kit/index.ts"],
+        "@conondrum/models": ["libs/models/index.ts"],
       }
   },
   "include": ["src/**/*", "libs/**/*"],

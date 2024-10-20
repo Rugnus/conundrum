@@ -8,3 +8,5 @@ export * from "./config/config";
 export * from "./Button/Button";
 
 export * from "./Timer/Timer";
+
+export * from "./Input/SearchInput";
