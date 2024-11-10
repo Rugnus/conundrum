@@ -7,8 +7,8 @@ import { SAccordionWrapper, SAppAccordion } from "./styles/SAccordionWrapper";
 export const AppAccordion: FC<{ items?: Application[] }> = ({ items }) => {
   const navigate = useNavigate();
 
-  const onCardClick = () => {
-    navigate("/blind-type");
+  const onCardClick = (route: string) => {
+    navigate(`/${route}`);
   };
 
   return (
@@ -21,7 +21,7 @@ export const AppAccordion: FC<{ items?: Application[] }> = ({ items }) => {
             title={application.name}
             image={application.image}
             description={application.description}
-            onClick={onCardClick}
+            onClick={() => onCardClick(application.route)}
           />
         ))}
       </SAccordionWrapper>
