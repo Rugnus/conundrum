@@ -1,30 +1,32 @@
 import { SearchInput } from "@conundrum/ui-kit";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { AppAccordion } from "src/components/AppAccordion/AppAccordion";
 import { RootState } from "src/store/store";
 import { SCatalog } from "./styles/SCatalog";
 
 export const Catalog: FC = () => {
-  const navigate = useNavigate();
+  const [query, setQuery] = useState<string>("");
 
   const applications = useSelector(
     (state: RootState) => state.applicationReducer.list
   );
+  const filteredApplications = applications.filter((application) =>
+    application.name.toLowerCase().includes(query.toLowerCase())
+  );
 
-  const onCardClick = () => {
-    navigate("/blind-type");
-  };
-
-  const onSearch = () => {
-    console.log("search");
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
   };
 
   return (
     <SCatalog>
-      <SearchInput placeholder={"Поиск по названию"} onSearch={onSearch} />
-      <AppAccordion items={applications} />
+      <SearchInput
+        placeholder={"Поиск по названию"}
+        onSearch={handleSearch}
+        debounceTime={300}
+      />
+      <AppAccordion items={filteredApplications} />
     </SCatalog>
   );
 };
